@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZYLORO | زيلورو</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@100;400;900&display=swap');
+        body { font-family: 'Noto Sans Arabic', sans-serif; background-color: #050505; color: white; }
+        .glass { background: rgba(23, 23, 23, 0.8); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.1); }
+    </head>
+<body class="min-h-screen flex flex-col justify-between overflow-hidden">
+
+    <header class="p-6 flex justify-between items-center z-50">
+        <div class="flex items-center gap-2">
+            <div class="w-8 h-8 bg-cyan-500 rounded-lg flex items-center justify-center shadow-[0_0_15px_rgba(6,182,212,0.5)]">
+                <i data-lucide="shopping-bag" class="text-black w-5 h-5"></i>
+            </div>
+            <span class="text-2xl font-black tracking-tighter italic">ZYLORO</span>
+        </div>
+        <div class="w-10 h-10 rounded-full glass flex items-center justify-center">
+            <i data-lucide="user" class="text-neutral-400 w-5 h-5"></i>
+        </div>
+    </header>
+
+    <main class="flex-1 flex flex-col items-center justify-center p-6 text-center">
+        <div class="space-y-6 animate-pulse">
+            <div class="inline-flex items-center gap-2 px-4 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-500 text-[10px] font-bold tracking-widest uppercase">
+                <i data-lucide="sparkles" class="w-3 h-3"></i>
+                AI Engine Active
+            </div>
+            <h1 class="text-5xl font-black leading-tight tracking-tight text-white">
+                ماذا تريد أن <br/> <span class="text-cyan-500">تجد</span> اليوم؟
+            </h1>
+            <p class="text-neutral-500 text-sm max-w-xs mx-auto">
+                أرخص الأسعار والقطع المشابهة بلمسة واحدة.
+            </p>
+        </div>
+    </main>
+
+    <div class="text-center mb-4">
+        <span class="text-[9px] text-neutral-600 tracking-[0.3em] uppercase">
+            Remaining Attempts: <span class="text-cyan-500 font-bold">2</span>
+        </span>
+    </div>
+
+    <div class="p-6 mb-4 max-w-xl mx-auto w-full">
+        <div class="glass rounded-[2.5rem] p-2 flex items-center gap-2 shadow-2xl">
+            <button class="p-4 text-neutral-500 hover:text-white transition-colors">
+                <i data-lucide="mic" class="w-6 h-6"></i>
+            </button>
+            
+            <input type="text" placeholder="ابحث عن منتج أو ماركة..." 
+                class="flex-1 bg-transparent border-none outline-none text-right px-2 text-white placeholder-neutral-700 text-sm">
+
+            <button class="bg-cyan-500 hover:bg-cyan-400 text-black w-14 h-14 rounded-[1.8rem] flex items-center justify-center shadow-[0_0_20px_rgba(6,182,212,0.3)] transition-transform active:scale-90">
+                <i data-lucide="camera" class="w-7 h-7"></i>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // تشغيل الأيقونات
+        lucide.createIcons();
+    </script>
+</body>
+</html>
