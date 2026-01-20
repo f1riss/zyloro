@@ -3,65 +3,130 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZYLORO | زيلورو</title>
+    <title>ZYLORO | جعفر الذكي</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;900&display=swap');
-        body { font-family: 'Noto Sans Arabic', sans-serif; background-color: #050505; color: white; margin: 0; padding: 0; }
-        .glass { background: rgba(23, 23, 23, 0.8); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.1); }
-        .cyan-glow { box-shadow: 0 0 20px rgba(6, 182, 212, 0.2); }
+        body { font-family: 'Noto Sans Arabic', sans-serif; background-color: #050505; color: white; margin: 0; overflow: hidden; }
+        .glass { background: rgba(23, 23, 23, 0.7); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.1); }
+        #video-preview { width: 100%; height: 100%; object-fit: cover; position: fixed; top: 0; left: 0; z-index: 1; transform: scaleX(-1); display: none; }
+        .ai-card { animation: slideUp 0.5s ease-out; }
+        @keyframes slideUp { from { transform: translateY(100px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
     </style>
 </head>
-<body class="min-h-screen flex flex-col justify-between overflow-hidden">
+<body class="min-h-screen flex flex-col justify-between">
 
-    <header class="p-6 flex justify-between items-center z-50">
+    <video id="video-preview" autoplay playsinline></video>
+    <canvas id="canvas" style="display:none;"></canvas>
+
+    <header class="p-6 flex justify-between items-center z-50 relative">
         <div class="flex items-center gap-2">
-            <div class="w-8 h-8 bg-cyan-500 rounded-lg flex items-center justify-center shadow-[0_0_15px_rgba(6,182,212,0.5)]">
-                <span class="text-black font-bold">Z</span>
-            </div>
-            <span class="text-2xl font-black tracking-tighter italic">ZYLORO</span>
+            <div class="w-10 h-10 bg-cyan-500 rounded-xl flex items-center justify-center font-bold text-black shadow-[0_0_20px_rgba(6,182,212,0.4)] text-xl">Z</div>
+            <span class="text-2xl font-black italic tracking-tighter uppercase">Zyloro</span>
         </div>
-        <div class="w-10 h-10 rounded-full glass flex items-center justify-center text-neutral-400">
-            👤
+        <div id="status-dot" class="flex items-center gap-2 glass px-3 py-1 rounded-full">
+            <div class="w-2 h-2 rounded-full bg-red-500 shadow-[0_0_8px_red]"></div>
+            <span class="text-[10px] font-bold text-neutral-400 uppercase tracking-widest">System Offline</span>
         </div>
     </header>
 
-    <main class="flex-1 flex flex-col items-center justify-center p-6 text-center">
-        <div class="space-y-6">
-            <div class="inline-flex items-center gap-2 px-4 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-500 text-[10px] font-bold tracking-widest uppercase">
-                ✨ AI Engine Active
+    <main id="display-area" class="flex-1 flex flex-col items-center justify-center p-6 text-center z-50 relative">
+        <div id="welcome-content" class="space-y-6 transition-all duration-700">
+            <h1 class="text-6xl font-black leading-tight">أنا <span class="text-cyan-500 tracking-tighter">جعفر</span></h1>
+            <p class="text-neutral-400 text-lg max-w-md mx-auto leading-relaxed">أرخص الأسعار، تحليل الصور، والبحث الذكي في خدمتك.</p>
+        </div>
+
+        <div id="result-card" class="hidden ai-card glass p-8 rounded-[2.5rem] max-w-2xl w-full text-right shadow-2xl border border-cyan-500/20">
+            <div class="flex justify-between items-center mb-4 border-b border-white/10 pb-4">
+                <span class="text-cyan-500 font-bold">✨ تحليل جعفر الذكي</span>
+                <button onclick="location.reload()" class="text-neutral-500 text-xs hover:text-white">إغلاق ×</button>
             </div>
-            <h1 class="text-5xl font-black leading-tight tracking-tight text-white">
-                ماذا تريد أن <br/> <span class="text-cyan-500">تجد</span> اليوم؟
-            </h1>
-            <p class="text-neutral-500 text-sm max-w-xs mx-auto">
-                أرخص الأسعار والقطع المشابهة بلمسة واحدة من جعفر.
-            </p>
+            <div id="ai-response" class="text-white text-lg leading-loose space-y-4"></div>
         </div>
     </main>
 
-    <div class="p-6 mb-4 max-w-xl mx-auto w-full">
-        <div class="text-center mb-4">
-            <span class="text-[9px] text-neutral-600 tracking-[0.3em] uppercase">
-                Remaining Attempts: <span class="text-cyan-500 font-bold">2</span>
-            </span>
-        </div>
-        
-        <div class="glass rounded-[2.5rem] p-2 flex items-center gap-2 shadow-2xl cyan-glow">
-            <button class="p-4 text-neutral-500">🎤</button>
-            
-            <input type="text" placeholder="ابحث عن منتج أو ماركة..." 
-                class="flex-1 bg-transparent border-none outline-none text-right px-2 text-white placeholder-neutral-700 text-sm">
-
-            <button class="bg-cyan-500 hover:bg-cyan-400 text-black w-14 h-14 rounded-[1.8rem] flex items-center justify-center transition-transform active:scale-90 shadow-lg font-bold text-xl">
+    <div class="p-8 mb-4 max-w-2xl mx-auto w-full z-50 relative">
+        <div class="glass rounded-[3rem] p-3 flex items-center gap-3 shadow-2xl border border-white/5">
+            <button class="p-4 text-neutral-500 hover:text-white transition-colors">🎤</button>
+            <input id="user-input" type="text" placeholder="ماذا تريد أن تجد اليوم؟" 
+                   class="flex-1 bg-transparent border-none outline-none text-right px-4 text-white text-lg placeholder-neutral-700">
+            <button id="action-btn" onclick="handleAction()" 
+                    class="bg-cyan-500 hover:bg-cyan-400 text-black w-16 h-16 rounded-[2rem] flex items-center justify-center shadow-[0_0_25px_rgba(6,182,212,0.3)] active:scale-95 transition-all text-3xl font-bold">
                 📸
             </button>
         </div>
-        
-        <p class="text-[8px] text-center text-neutral-800 mt-6 tracking-widest uppercase">
-            Powered by Gemini & Zyloro Engine
-        </p>
     </div>
 
+    <script>
+        const API_KEY = "AIzaSyCKJe2Bg_H47vWTkozo4ZXwDNmHKQM-bkI"; 
+        let stream = null;
+
+        async function handleAction() {
+            const btn = document.getElementById('action-btn');
+            const video = document.getElementById('video-preview');
+            const welcome = document.getElementById('welcome-content');
+            const statusDot = document.querySelector('#status-dot div');
+            const statusText = document.querySelector('#status-dot span');
+            
+            if (!stream) {
+                try {
+                    stream = await navigator.mediaDevices.getUserMedia({ video: true });
+                    video.srcObject = stream;
+                    video.style.display = 'block';
+                    welcome.style.opacity = '0';
+                    statusDot.className = "w-2 h-2 rounded-full bg-green-500 shadow-[0_0_8px_green]";
+                    statusText.innerText = "Camera Active";
+                    statusText.classList.replace('text-neutral-400', 'text-green-500');
+                    btn.innerHTML = "🔍";
+                } catch (err) {
+                    alert("فضلاً قم بتفعيل الكاميرا من إعدادات المتصفح ليعمل جعفر.");
+                }
+            } else {
+                analyzeImage();
+            }
+        }
+
+        async function analyzeImage() {
+            const canvas = document.getElementById('canvas');
+            const video = document.getElementById('video-preview');
+            const responseDiv = document.getElementById('ai-response');
+            const resultCard = document.getElementById('result-card');
+            const btn = document.getElementById('action-btn');
+
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            canvas.getContext('2d').drawImage(video, 0, 0);
+            const base64Image = canvas.toDataURL('image/jpeg').split(',')[1];
+
+            resultCard.classList.remove('hidden');
+            responseDiv.innerHTML = "<div class='animate-pulse text-cyan-500 text-center py-10'>جعفر يحلل الصورة الآن...</div>";
+            btn.style.opacity = "0.5";
+            btn.disabled = true;
+
+            try {
+                const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({
+                        contents: [{
+                            parts: [
+                                { text: "أنت جعفر، المساعد الذكي لموقع Zyloro. حلل هذه الصورة بدقة. اذكر اسم المنتج، مواصفاته، سعره التقريبي في السعودية ومصر، وأفضل المواقع لشرائه (Amazon, Noon). اجعل الرد منسقاً وجميلاً بلهجة ودودة." },
+                                { inline_data: { mime_type: "image/jpeg", data: base64Image } }
+                            ]
+                        }]
+                    })
+                });
+                
+                const data = await res.json();
+                const text = data.candidates[0].content.parts[0].text;
+                responseDiv.innerHTML = text.replace(/\n/g, "<br>");
+            } catch (err) {
+                responseDiv.innerHTML = "عذراً، جعفر واجه مشكلة في الاتصال. جرب مرة أخرى.";
+            } finally {
+                btn.style.opacity = "1";
+                btn.disabled = false;
+            }
+        }
+    </script>
 </body>
 </html>
